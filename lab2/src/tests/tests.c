@@ -23,6 +23,21 @@ void testRevertString(void) {
   CU_ASSERT_STRING_EQUAL_FATAL(str_with_even_chars_num, "dcba");
 }
 
+void testRevertStringTwo(void) {
+  char str_empty="";
+  char str_A="AAAAA";
+  char str_int = "12345";
+
+  RevertString(str_empty);
+  CU_ASSERT_STRING_EQUAL_FATAL(str_empty, "");
+
+  RevertString(str_A);
+  CU_ASSERT_STRING_EQUAL_FATAL(str_with_odd_chars_num, "AAAAA");
+  
+  RevertString(str_int);
+  CU_ASSERT_STRING_EQUAL_FATAL(str_int, "54321");
+}
+
 int main() {
   CU_pSuite pSuite = NULL;
 
@@ -38,11 +53,15 @@ int main() {
 
   /* add the tests to the suite */
   /* NOTE - ORDER IS IMPORTANT - MUST TEST fread() AFTER fprintf() */
-  if ((NULL == CU_add_test(pSuite, "test of RevertString function",
-                           testRevertString))) {
+  if ((NULL == CU_add_test(pSuite, "test1 of RevertString function",
+                           testRevertString)) ||
+     (NULL == CU_add_test(pSuite, "test2 of RevertString function",
+                           testRevertStringTwo)))
+                         {
     CU_cleanup_registry();
     return CU_get_error();
   }
+  
 
   /* Run all tests using the CUnit Basic interface */
   CU_basic_set_mode(CU_BRM_VERBOSE);
