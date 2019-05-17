@@ -1,0 +1,18 @@
+CC=gcc
+CFLAGS=-I.
+
+
+threadSum.so: threadSum.h
+	$(CC) -c -fPIC threadSum.c -o threadSum.o 
+	$(CC) -shared threadSum.o -o libthreadSum.so
+
+	  
+parallel_sum: threadSum.h threadSum.c utils.o threadSum.so 
+	$(CC) -o psum.o -c parallel_sum.c
+	$(CC) -o parallel_sum psum.o utils.o -L$(shell pwd) -lthreadSum -pthread -Wl,-rpath=$(shell pwd) $(CFLAGS)
+
+
+clean:
+	rm -rf *.o  *.so parallel_sum 
+	
+	
